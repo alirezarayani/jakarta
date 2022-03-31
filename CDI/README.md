@@ -225,3 +225,97 @@ Inject annotation can be placed on :
     2. CDI bean created by the container during the application start up.
 
 - Callbacks: `@PostConstruct` and `@PreDestroy`
+
+### What Are Qualifiers?
+
+Qualifiers are custom annotations that mark the injection points and the concrete implementations so that matching can
+occur when more than one bean of the same type exists.
+
+By default, all managed beans are annotated with a default qualifier simply called default (`@Default`).Although you
+won't see it when you inspect a bean.
+
+All the injection points are annotated with the same qualifier as well.
+
+```java
+
+@Default
+public class EAN5Barcode implements CodeGenerator {
+}
+```
+
+```java
+
+@Default
+public class EAN8Barcode implements CodeGenerator {
+}
+```
+
+We cannot rely on the default qualifier to help us, It does nothing to disambiguate our bean.
+
+So custom qualifiers are needed.
+
+**Created a Custom qualifier**
+
+```java
+
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface EAN13 {
+}
+```
+
+Once we have a qualifier, we use it to annotate the concrete implementation.
+
+```java
+
+@EAN13
+public class EAN13Barcode implements CodeGenerator {
+    @Override
+    public String generateCode() {
+        return "EAN13: 1335443243543";
+    }
+}
+```
+
+The injection point where we want this implementation to be injected should also be annotated with the qualifier.
+
+```java
+public class ProductService {
+
+    //Field
+    @Inject
+    @EAN13
+    private CodeGenerator codeGenerator;
+
+    // constructor
+    @Inject
+    public ProductService(@EAN13 CodeGenerator codeGenerator) {
+        this.codeGenerator = codeGenerator;
+    }
+
+    //setter
+    @Inject
+    public void setCodeGenerator(@EAN13 CodeGenerator codeGenerator) {
+    }
+}
+```
+
+### Advanced qualifiers
+
+We can have as many qualifiers as there are implementations. However, in a large system, this may be a very large number
+and result in a lot of qualifier classes that do little other than mark injection points and implementations.
+
+```java
+
+@Target({ElementType.FIELD, ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface Barcode {
+    Type type() default Type.EAN13;
+
+    enum Type {
+        EAN5, EAN8, EAN13;
+    }
+}
+```
