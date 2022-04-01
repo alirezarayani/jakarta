@@ -1,4 +1,4 @@
-package session3.producerQualifier;
+package session03.producerQualifier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

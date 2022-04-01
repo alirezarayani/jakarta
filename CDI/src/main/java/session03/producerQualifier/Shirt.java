@@ -1,4 +1,4 @@
-package session3.producerQualifier;
+package session03.producerQualifier;
 
 public class Shirt {
 

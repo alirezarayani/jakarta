@@ -1,4 +1,4 @@
-package session3.producerQualifier;
+package session03.producerQualifier;
 
 import javax.enterprise.inject.se.SeContainer;
 import javax.enterprise.inject.se.SeContainerInitializer;

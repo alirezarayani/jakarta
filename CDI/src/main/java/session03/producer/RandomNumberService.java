@@ -1,4 +1,4 @@
-package session3.producer;
+package session03.producer;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

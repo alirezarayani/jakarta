@@ -28,16 +28,12 @@ n
 >CDI/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml,e\9\e91e86c974edff8ff87103fb8945e6efbd3d0229
 h
 8CDI/src/main/java/session01/loosecoupling/BootStrap.java,d\c\dc76399fa9644b9b79a2720d805c56f9a16a0a2c
-r
-BCDI/src/main/java/session01/dependencyInjection/CodeGenerator.java,9\9\99db357bcb0ac1397d4c7f0fe44b9eb2b06678ac
 l
 <CDI/src/main/java/session01/loosecoupling/CodeGenerator.java,2\7\277a2645641f407c4564794e64bb08ce55a6c5ca
 j
 :CDI/src/main/java/session01/loosecoupling/EAN5Barcode.java,4\e\4eafc03cff84ecd88065d55b5bed5f63b2b3bde4
 j
 :CDI/src/main/java/session01/loosecoupling/EAN8Barcode.java,f\8\f899dd2835ca2ee707118ee0972182e41eacd3f0
-q
-ACDI/src/main/java/session01/dependencyInjection/EAN13Barcode.java,a\b\ab288fc3aca20329eab2838f3a0b1e3a4911f85e
 k
 ;CDI/src/main/java/session01/loosecoupling/EAN13Barcode.java,9\0\90be028080b2e0967ab76b75454fefbca1a55668
 k
@@ -46,16 +42,12 @@ f
 6CDI/src/main/java/session01/loosecoupling/Product.java,c\b\cb35527210323c37f984d11ba405620e60060faf
 f
 6CDI/src/main/java/session01/tightcoupling/Product.java,9\1\913a1c5bda06fbec0e0bf26be2249dedcb1a90a1
-s
-CCDI/src/main/java/session01/dependencyInjection/ProductService.java,9\3\93e5deb06029ee91156714f274838b57eb423e81
 m
 =CDI/src/main/java/session01/loosecoupling/ProductService.java,4\4\44c6b2fedd2b40c0b73e30d98db2a57baf5386b0
 m
 =CDI/src/main/java/session01/tightcoupling/ProductService.java,7\d\7d6d768128e0afe8eae56cc7c885252261b67c34
 l
 <CDI/src/main/java/session01/dependencyInjection/Product.java,0\9\091e992483f24e443592f70b5a68736a9067ae52
-n
->CDI/src/main/java/session01/dependencyInjection/BootStrap.java,3\0\3078ed143b2eb602fc581023dfc4d242491a83b1
 ;
 CDI/CDI.iml,0\d\0d7b4d5b44d0a0d0e82a732f85c1ced81a8e0286
 w
@@ -106,8 +98,6 @@ j
 :CDI/src/main/java/session02/advancedQualifier/Barcode.java,6\3\632dff46f602531deba86fa8ff5763f8e84bfccc
 i
 9CDI/src/main/java/session02/combineQualifier/Barcode.java,e\3\e3840009475257f969fd6f74e1f8886301033286
-l
-<CDI/src/main/java/session02/advancedQualifier/BootStrap.java,2\9\292c7777b1c40e8207078db6261d7179d4071008
 k
 ;CDI/src/main/java/session02/combineQualifier/BootStrap.java,9\2\929dfeb2bda64a4a1b0ce2417ef4483a906f86b9
 d
@@ -124,8 +114,6 @@ n
 >CDI/src/main/java/session02/advancedQualifier/EAN5Barcode.java,2\6\26213dd093b8523bf2b790609e738fad892b4f96
 f
 6CDI/src/main/java/session02/qualifier/EAN5Barcode.java,e\1\e15e6fa2e9d2ae9ee666e20abe928a3f5073bc40
-n
->CDI/src/main/java/session02/advancedQualifier/EAN8Barcode.java,2\2\22e0ba6dcbc16d744aa670bec72c4478a2fc6377
 f
 6CDI/src/main/java/session02/qualifier/EAN8Barcode.java,8\8\889a860aab733f9b8d7657f5df41f97c381e24cc
 o
@@ -146,8 +134,6 @@ i
 9CDI/src/main/java/session02/combineQualifier/Product.java,8\7\875a3baa34dc38e4bd967e4a060f79c6169570cb
 b
 2CDI/src/main/java/session02/qualifier/Product.java,5\b\5baa8cc6c6766de97bbd02c555d4aa6832b303a4
-q
-ACDI/src/main/java/session02/advancedQualifier/ProductService.java,5\d\5d4def62f5b99d3741985b93ff4f7e66bc8fb3bf
 i
 9CDI/src/main/java/session02/qualifier/ProductService.java,e\c\ec5d1f1ab1a9d812b26c9dc15c411af818f9e392
 p

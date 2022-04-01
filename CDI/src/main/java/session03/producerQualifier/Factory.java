@@ -1,4 +1,4 @@
-package session3.producerQualifier;
+package session03.producerQualifier;
 
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;

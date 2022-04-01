@@ -1,4 +1,4 @@
-package session3.producer;
+package session03.producer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
