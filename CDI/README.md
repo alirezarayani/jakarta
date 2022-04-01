@@ -283,18 +283,18 @@ The injection point where we want this implementation to be injected should also
 ```java
 public class ProductService {
 
-    //Field
+    //Field injection point
     @Inject
     @EAN13
     private CodeGenerator codeGenerator;
 
-    // constructor
+    // constructor injection point
     @Inject
     public ProductService(@EAN13 CodeGenerator codeGenerator) {
         this.codeGenerator = codeGenerator;
     }
 
-    //setter
+    //setter injection point
     @Inject
     public void setCodeGenerator(@EAN13 CodeGenerator codeGenerator) {
     }
@@ -318,4 +318,70 @@ public @interface Barcode {
         EAN5, EAN8, EAN13;
     }
 }
+```
+
+## What are producer methods?
+
+Producer methods overcome inherent issues with letting the container manage the instantiation of beans.
+
+You can allow any class to be injectable.
+
+This includes classes that we have created programmatically, classes that require some custom initialization, types
+whose implementation might change at runtime, and interestingly, those classes that we don't have control over such as
+java core classes, and classes from compiled third party APIs.
+
+```java
+
+@Produces
+public ArrayList<Integer> get(){
+        return new ArrayList<Integer>(){{
+        add(new Random().nextInt(100));
+        add(new Random().nextInt(100));
+        add(new Random().nextInt(100));
+        }};
+        }
+```
+
+By default, a producer method creates an instance of a bean that adopts the same scope as the client that uses it.
+
+What this means is if the produced instance is injected into a bean that is, say, session scoped, then the injected
+instance will be session scoped.
+
+```java
+@Produces
+@ApplicationScoped
+public ArrayList<Integer> get(){
+        return new ArrayList<Integer>(){{
+        add(new Random().nextInt(100));
+        add(new Random().nextInt(100));
+        add(new Random().nextInt(100));
+        }};
+        }
+```
+
+## Disposes for producers
+
+It'll remove a produced bean when it's work is completed.
+
+The disposer method is always matched to a producer method .
+
+To crete a disposer method, you annotate the parameter that is the same type s the instance you want to destroy
+
+```java
+import javax.enterprise.context.SessionScoped;
+
+@Produces
+@SessionScoped
+public ArrayList<Integer> get(){
+        return new ArrayList<Integer>(){{
+        add(new Random().nextInt(100));
+        add(new Random().nextInt(100));
+        add(new Random().nextInt(100));
+        }};
+        }
+```
+```java
+public void clearArray(@isposes ArrayList<Integer> numbers){
+    number.clear();
+        }
 ```
