@@ -226,6 +226,8 @@ Inject annotation can be placed on :
 
 - Callbacks: `@PostConstruct` and `@PreDestroy`
 
+---
+
 ### What Are Qualifiers?
 
 Qualifiers are custom annotations that mark the injection points and the concrete implementations so that matching can
@@ -320,6 +322,8 @@ public @interface Barcode {
 }
 ```
 
+---
+
 ## What are producer methods?
 
 Producer methods overcome inherent issues with letting the container manage the instantiation of beans.
@@ -380,8 +384,163 @@ public ArrayList<Integer> get(){
         }};
         }
 ```
+
 ```java
 public void clearArray(@isposes ArrayList<Integer> numbers){
-    number.clear();
+        number.clear();
         }
+```
+
+---
+
+## What are events and observers?
+
+The CDI API provides a lightweight event and observer feature that implements the observer pattern in a very decoupled
+way.
+
+The idea behind the observer pattern is that an object that changes its state can inform other objects that the change
+has occurred.
+
+It's about passing messages from one object to another.
+
+The purpose is to communicate state change that provokes some action in another part of the system.
+
+example:
+
+- PriceChange is an event.
+- Event fired by the observer.
+- TradingBots are subscribers.
+
+The observers and subscribers are completely decouple from each other, which means that the observer has no knowledge of
+the existence of the subscribers.
+
+There may be hundreds of subscribers or none at all.
+
+The programmer can add and remove subscribers without the observers being effected.
+
+### Three parts:
+
+1. Event class
+
+```java
+public class PriceChangeEvent {
+    private String stock;
+    private float price;
+    private float priceChange;
+}
+```
+
+2. Fire the event
+
+```java
+public class StockObserver {
+
+    @Inject
+    private Event<PriceChangeEvent> event;
+
+    public void priceChange(PriceChangeEvent priceChangeEvent) {
+        event.fire(priceChangeEvent);
+    }
+}
+
+```
+
+3. Subscribers
+
+```java
+public class BuyTradingBot {
+
+    public void action(@Observes PriceChangeEvent priceChangeEvent) {
+        if (priceChangeEvent.getPriceChange() > 0) {
+            System.out.println("BUY: " + priceChangeEvent.getStock());
+        }
+    }
+}
+
+
+```
+
+```java
+public class SellTradingBot {
+
+    public void action(@Observes PriceChangeEvent priceChangeEvent) {
+        if (priceChangeEvent.getPriceChange() < 0) {
+            System.out.println("SELL: " + priceChangeEvent.getStock());
+        }
+    }
+}
+
+```
+
+**There are a few drawbacks to this feature.**
+
+- one is that if an exception is thrown in one of the subscribers then unexecuted subscribers will not receive any
+notification.
+
+Now this issue is resolved by either catching all executions in all observers or by using asynchronous events.
+
+```java
+public class SellTradingBot {
+
+    public void action(@Observes PriceChangeEvent priceChangeEvent) {
+        if (priceChangeEvent.getPriceChange() < 0) {
+            System.out.println("SELL: " + priceChangeEvent.getStock());
+        }
+        throw new NullPointerException();
+    }
+}
+
+```
+
+- The second issue is that if you have more than one subscriber listening for the same event there is no way to control
+the order in which the subscribers are executed.
+
+This issue is fixed by adding a priority annotation to the subscriber.It identifies the order in which those subscribers
+should be executed.
+
+Now this feature is only available with asynchronous subscribers.
+
+Asynchronous events are fired in separate threads, so each event gets its own thread and because of this if an exception
+is found in subscriber, no other subscriber is affected.
+
+1. Change `fire()` method to `fireAsync()`
+
+```java
+public class StockObserver {
+
+    @Inject
+    private Event<PriceChangeEvent> event;
+
+    public void priceChange(PriceChangeEvent priceChangeEvent) {
+        event.fireAsync(priceChangeEvent);
+    }
+}
+```
+
+2. Change `@Observer` annotation to `@ObservesAsync`in subscribers.
+
+```java
+public class BuyTradingBot {
+
+    public void action(@ObservesAsync PriceChangeEvent priceChangeEvent) {
+        if (priceChangeEvent.getPriceChange() > 0) {
+            System.out.println("BUY: " + priceChangeEvent.getStock());
+        }
+    }
+}
+
+```
+- We can also add priority order (`@Priority(100)`) to subscribers that respond to the same event.
+
+Lower priorities are executed first.
+
+```java
+public class SellTradingBot {
+
+    public void action(@ObservesAsync @Priority(100) PriceChangeEvent priceChangeEvent) {
+        if (priceChangeEvent.getPriceChange() < 0) {
+            System.out.println("SELL: " + priceChangeEvent.getStock());
+        }
+    }
+}
 ```
