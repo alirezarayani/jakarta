@@ -475,7 +475,7 @@ public class SellTradingBot {
 **There are a few drawbacks to this feature.**
 
 - one is that if an exception is thrown in one of the subscribers then unexecuted subscribers will not receive any
-notification.
+  notification.
 
 Now this issue is resolved by either catching all executions in all observers or by using asynchronous events.
 
@@ -493,7 +493,7 @@ public class SellTradingBot {
 ```
 
 - The second issue is that if you have more than one subscriber listening for the same event there is no way to control
-the order in which the subscribers are executed.
+  the order in which the subscribers are executed.
 
 This issue is fixed by adding a priority annotation to the subscriber.It identifies the order in which those subscribers
 should be executed.
@@ -530,6 +530,7 @@ public class BuyTradingBot {
 }
 
 ```
+
 - We can also add priority order (`@Priority(100)`) to subscribers that respond to the same event.
 
 Lower priorities are executed first.
@@ -541,6 +542,127 @@ public class SellTradingBot {
         if (priceChangeEvent.getPriceChange() < 0) {
             System.out.println("SELL: " + priceChangeEvent.getStock());
         }
+    }
+}
+```
+
+> What are interceptor?
+
+Interceptor are about adding behaviour to existing code to solve cross-cutting concerns and are part of the
+aspect-oriented programming paradigm.
+
+Cross-cutting concerns are non-business-related concerns, such as logging and security.
+
+They don't solve a business problem, but nevertheless are an important part of an application's make up.
+
+The idea is that such concerns should not be addressed at the same time, or in the same place as business concerns.
+
+And should therefore be separate from the application's business logic.
+
+Interceptors rely on code injection to add the desired behavior or functionality to each point of an existing code base
+that is identified as a qualifying injection point.
+
+It does this by intercepting method calls and executing desired logic before and after it executes the method.
+
+You have one point of reference for your entire cross-cutting code.Any changes you want to make to this logic is done in
+just one place, and applies to all methods.
+
+The cross-cutting logic that you want to execute before and after the method is encapsulated in a class annotated
+interceptor.
+
+```java
+
+@Interceptor
+@Transactional
+public class LoggerInterceptor {
+
+    @AroundInvoke
+    private Object doMethodLogging(InvocationContext ic) throws Exception {
+        // Before method call logic
+        Object returnValue = ic.proceed();
+        // After method returns logic
+        return returnValue;
+    }
+}
+```
+
+Sample code:
+
+```java
+
+@Interceptor
+@Logged
+@Priority(Interceptor.Priority.APPLICATION + 100)
+public class LoggerInterceptor {
+
+    @AroundInvoke
+    private Object doMethodLogging(InvocationContext ic) throws Exception {
+        System.out.println("Method name: " + ic.getMethod().getName());
+        System.out.println("Parameters : ");
+        Arrays.stream(ic.getParameters()).map(Object::toString).forEach(System.out::println);
+        return ic.proceed();
+    }
+}
+
+```
+
+```java
+
+@Inherited
+@InterceptorBinding
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.TYPE})
+public @interface Logged {
+} 
+```
+
+```java
+
+@Logged
+public class CustomerService {
+
+    public CustomerService() {
+    }
+
+    public void suspendCustomerAccount(String customerName, String reason) {
+        // perform logic that suspends the customer's account.
+    }
+
+    public void internalAccountAudit(String customerName) {
+        // perform internal audit logic
+    }
+}
+```
+
+### Intercept constructors
+
+Use ` @AroundConstruct`
+
+```java
+
+@Interceptor
+@Logged
+@Priority(Interceptor.Priority.APPLICATION + 100)
+public class LoggerInterceptor {
+
+    @AroundConstruct
+    private Object doClassLogging(InvocationContext ic) throws Exception {
+        Long start = System.currentTimeMillis();
+        Object returnValue = ic.proceed();
+        Long end = System.currentTimeMillis();
+        System.out.println("Construction time: " + (end - start));
+        return returnValue;
+    }
+}
+```
+
+```java
+
+@Logged
+public class CustomerService {
+
+    public CustomerService() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
     }
 }
 ```
