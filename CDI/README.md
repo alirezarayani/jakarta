@@ -666,3 +666,66 @@ public class CustomerService {
     }
 }
 ```
+
+> What are alternatives?
+
+The alternative feature allows the developer to provide an alternative implementation of a bean and to use it for
+different purposes.
+
+### Common use:
+
+1. Handling client-specific business logic
+2. To specify beans that are valid for a particular deployment scenario.
+3. To create test versions of beans to be used for testing.
+
+To make an alternative bean available for use, it must be annotated alternative `@Alternative` and be defined in the
+beans.xml file with the alternative element.
+
+```xml
+
+<beans xmlns="http://java.sun.com/xml/ns/javaee">
+    <alternatives>
+        <class>
+            session05.WebServiceTest
+        </class>
+    </alternatives>
+</beans>
+```
+. Must implement the same interface
+`@ Inject WebService webService`
+
+Now when the application is deployed, the alternative is used instead.
+```java
+public class BootStrap {
+    public static void main(String[] args) {
+        SeContainer container = SeContainerInitializer.newInstance()
+                .disableDiscovery()
+                .addPackages(WebService.class)
+                .selectAlternatives(CustomerWebServiceTest.class)
+                .initialize();
+
+        container.select(UseWebService.class).get().go();
+    }
+}
+```
+> What is the vetoed annotation?
+
+In some cases, you may not want a bean to be instantiated.
+
+You can achieve this by adding the vetoed `@Vetoed` annotation to the class definition of the bean.
+
+```java
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
+public class CustomerService {
+}
+```
+You can also exclude an entire package by annotating the package in the same way.
+
+```java
+@Vetoed
+package ir.lazydeveloper;
+
+import javax.enterprise.inject.Vetoed;
+```
