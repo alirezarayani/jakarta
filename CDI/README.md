@@ -691,10 +691,12 @@ beans.xml file with the alternative element.
     </alternatives>
 </beans>
 ```
+
 . Must implement the same interface
 `@ Inject WebService webService`
 
 Now when the application is deployed, the alternative is used instead.
+
 ```java
 public class BootStrap {
     public static void main(String[] args) {
@@ -708,6 +710,7 @@ public class BootStrap {
     }
 }
 ```
+
 > What is the vetoed annotation?
 
 In some cases, you may not want a bean to be instantiated.
@@ -721,6 +724,7 @@ import javax.enterprise.inject.Vetoed;
 public class CustomerService {
 }
 ```
+
 You can also exclude an entire package by annotating the package in the same way.
 
 ```java
@@ -729,3 +733,17 @@ package ir.lazydeveloper;
 
 import javax.enterprise.inject.Vetoed;
 ```
+
+---
+> What are bean scopes and context?
+
+Beans are managed by the CDI container (creation, injection, and destruction)
+
+| Scope        | Annotation          | Maps to...        |
+|:-------------|---------------------|:------------------|
+| Request      | @RequestScoped      | HTTP request      |
+| Session      | @SessionScoped      | Http Session      |
+| Application  | @ApplicationScoped  | A web application |
+| Conversation | @ConversationScoped | JSF lifecycle     |
+| Dependent    | @Dependent          | Client's scope    |
+| Singleton    | @Singleton          | Application       |
