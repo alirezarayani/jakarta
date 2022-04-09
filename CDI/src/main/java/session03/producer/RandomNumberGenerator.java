@@ -1,9 +1,11 @@
 package session03.producer;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RandomNumberGenerator {
@@ -21,5 +23,9 @@ public class RandomNumberGenerator {
             add(ran.nextInt(100));
             add(ran.nextInt(100));
         }};
+    }
+
+    public void dispose(@Disposes List<String> dishes) {
+        dishes = null;
     }
 }

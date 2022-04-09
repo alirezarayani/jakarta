@@ -1,22 +1,22 @@
 # Contexts and Dependency Injection (CDI)
 
 In this course, we.ll learn how to use **CDI** to enhance the behavior of your application.
-> Look at
+> Headlines
 
 1. CDI bean, their scope and context.
 2. How to use qualifiers to disambiguate between CDI beans of the same type.
 3. Use interceptor to implement cross-cutting concerns.
-4. Events and observers to send messages throughout our system.
+4. Events and observers to send messages throughout the system.
 5. Producer methods.
 6. Disposers.
-
-### Create a new Java Enterprise project with CDI
+---
+> Create a new Java Enterprise project with CDI
 
 1. Click New Project on the Welcome screen or select File | New | Project.
 2. In the wizard that opens, select Java Enterprise on the left.
 3. select the Contexts and Dependency Injection (CDI) checkbox.
-
-### What is Dependency?
+---
+> What is Dependency?
 
 - Requirement for other classes
     1. Dependency is about the requirement that a class has to use other classes for it to function properly
@@ -35,7 +35,7 @@ In this course, we.ll learn how to use **CDI** to enhance the behavior of your a
 - Allows reuse of functionality
     1. Without duplicating code
 
-### What is Coupling?
+> What is Coupling?
 
 Classes that use other classes are said to be coupled.
 
@@ -45,7 +45,7 @@ Classes that use other classes are said to be coupled.
 - Strive for loose coupling
 - Uses interface as reference types
 
-### What is context and Dependency Injection (CDI)?
+> What is context and Dependency Injection (CDI)?
 
 - Two services working together
 - Context service and injection service
@@ -159,6 +159,8 @@ Need a  `resources/META-INF/bean.xml` file.
 
 - CDI 2.0 user in java SE
 
+Using CDI in a java SE application, you just need to instantiate the CDI container
+
 ```java
    SeContainer container=
         SeContainerInitializer
@@ -168,14 +170,15 @@ Need a  `resources/META-INF/bean.xml` file.
 
 - Obtain bean by name
 
+can Access an instance of bean be selecting it by name from the container.
 ```java
   container.select(ProductService.class)
         .get().generateCode(book);
 ```
 
 - In a java EE app the container instantiates.
-
-### What is a CDI Bean?
+---
+> What is a CDI Bean?
 
 - CDI bean is a POJO ( plain old java object )
 
